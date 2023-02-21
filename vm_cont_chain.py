@@ -1,3 +1,9 @@
+# Team members:
+# - Ian Gravallese
+#
+# Github Repo:
+# https://github.com/IanGrav/lab-04
+
 import paho.mqtt.client as mqtt
 import time
 
@@ -19,7 +25,7 @@ def on_message_from_ping(client, userdata, message):
     num = int(message.payload.decode()) + 1
     # wait one second
     time.sleep(1)
-    # publish the new num value with the topic "ping"
+    # publish the new num value under topic "pong"
     client.publish("gravalle/pong", num)
 
 if __name__ == '__main__':
