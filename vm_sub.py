@@ -1,3 +1,9 @@
+# Team members:
+# - Ian Gravallese
+#
+# Github Repo:
+# https://github.com/IanGrav/lab-04
+
 """EE 250L Lab 04 Starter Code
 Run vm_pub.py in a separate terminal on your VM."""
 
@@ -14,10 +20,12 @@ def on_connect(client, userdata, flags, rc):
 
     print("Connected to server (i.e., broker) with result code "+str(rc))
     #replace user with your USC username in all subscriptions
-    client.subscribe("user/ipinfo")
+    client.subscribe("gravalle/ipinfo")
+    client.subscribe("gravalle/date")
+    client.subscribe("gravalle/time")
     
     #Add the custom callbacks by indicating the topic and the name of the callback handle
-    client.message_callback_add("user/ipinfo", on_message_from_ipinfo)
+    client.message_callback_add("gravalle/ipinfo", on_message_from_ipinfo)
 
 
 """This object (functions are objects!) serves as the default callback for 
@@ -27,9 +35,16 @@ callback has not been registered using paho-mqtt's message_callback_add()."""
 def on_message(client, userdata, msg):
     print("Default callback - topic: " + msg.topic + "   msg: " + str(msg.payload, "utf-8"))
 
-#Custom message callback.
+#Custom message callbackf for IP
 def on_message_from_ipinfo(client, userdata, message):
    print("Custom callback  - IP Message: "+message.payload.decode())
+# Custsom message callback for date
+def on_message_from_date(client, userdata, message):
+    print("Custom callback  - Date Message: "+message.payload.decode())
+
+# removed the custom callback for time, that should use the default callback
+def on_message_from_time(client, userdata, message):
+    print("Custom callback  - Time Message: "+message.payload.decode())
 
 
 
@@ -42,6 +57,15 @@ if __name__ == '__main__':
     client.on_message = on_message
     #attach the on_connect() callback function defined above to the mqtt client
     client.on_connect = on_connect
+    # register a custom callback for ip address:
+    client.message_callback_add("gravalle/ipinfo", on_message_from_ipinfo)
+    # register a custom callback for date:
+    client.message_callback_add("gravalle/date", on_message_from_date)
+    '''
+    Removed custom callback so time is under the default callback
+    # register a custom callback for time:
+    client.message_callback_add("gravalle/time", on_message_from_time)
+    '''
 
     """Connect using the following hostname, port, and keepalive interval (in 
     seconds). We added "host=", "port=", and "keepalive=" for illustrative 
