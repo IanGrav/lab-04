@@ -1,3 +1,9 @@
+# Team members:
+# - Ian Gravallese
+#
+# Github Repo:
+# https://github.com/IanGrav/lab-04
+
 import paho.mqtt.client as mqtt
 import time
 
@@ -17,7 +23,7 @@ def on_message_from_pong(client, userdata, message):
     num = int(message.payload.decode()) + 1
     # wait one second
     time.sleep(1)
-    # publish the new num value with the topic "ping"
+    # publish the new num value under topic "ping"
     client.publish("gravalle/ping", num)
 
 
@@ -29,7 +35,7 @@ if __name__ == '__main__':
     client.on_connect = on_connect
     #attach a default callback which we defined above for incoming mqtt messages
     client.on_message = on_message
-    # register a custom callback for ping:
+    # register a custom callback for pong:
     client.message_callback_add("gravalle/pong", on_message_from_pong)
     # connect to my RPI as a host, with the default MQTT port number
     client.connect(host="172.20.10.13", port=1883, keepalive=60)
