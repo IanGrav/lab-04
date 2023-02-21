@@ -1,3 +1,9 @@
+# Team members:
+# - Ian Gravallese
+#
+# Github Repo:
+# https://github.com/IanGrav/lab-04
+
 """EE 250L Lab 04 Starter Code
 Run vm_sub.py in a separate terminal on your VM."""
 
@@ -14,7 +20,7 @@ def on_connect(client, userdata, flags, rc):
 
 if __name__ == '__main__':
     #get IP address
-    ip_address=0 
+    ip_address = socket.gethostbyname(socket.gethostname())
     """your code here"""
     #create a client object
     client = mqtt.Client()
@@ -41,11 +47,20 @@ if __name__ == '__main__':
 
     while True:
         #replace user with your USC username in all subscriptions
-        client.publish("user/ipinfo", f"{ip_address}")
+        client.publish("gravalle/ipinfo", f"{ip_address}")
         print("Publishing ip address")
         time.sleep(4)
-
         #get date and time 
         """your code here"""
-        #publish date and time in their own topics
+        dateTime = datetime.now()
+        #format date in month, day, year
+        currentDate = dateTime.strftime("%m-%d-%Y")
+        #format time in hours, minutes, seconds
+        currentTime = dateTime.strftime("%H:%M:%S")
+        #publish date and time under their own topics
         """your code here"""
+        client.publish("gravalle/date", f"{currentDate}")
+        print("Publishing date")
+        client.publish("gravalle/time", f"{currentTime}")
+        print("Publishing time")
+        time.sleep(4)
